@@ -6,19 +6,18 @@ import io
 import base64
 import sys
 import logging
-import tensorflow as tf  # Assuming TensorFlow is used; replace with PyTorch if needed
+import tensorflow as tf  
 
-# Configure logging
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
-# Print Python version at startup
 logger.info(f"Python version: {sys.version}")
 
-# Initialize Flask app and allow cross-origin requests
+
 app = Flask(__name__)
 CORS(app)
 
@@ -38,11 +37,11 @@ def process_image(image):
     try:
         logger.info("Starting image processing")
         
-        # Resize the image to the model's input size
-        logger.info("Resizing image to 224x224")
-        image = image.resize((256, 256))  # Adjust size as needed for your model
         
-        # Convert to array and normalize
+        logger.info("Resizing image to 224x224")
+        image = image.resize((256, 256))  
+        
+        
         logger.info("Converting image to array and normalizing")
         image_array = np.array(image)
         image_array = image_array / 255.0
@@ -69,7 +68,7 @@ def predict():
     try:
         logger.info("Received prediction request")
         
-        # Get the base64 image from the request
+    
         data = request.json
         if not data or 'image' not in data:
             logger.error("No image data received")
@@ -82,11 +81,11 @@ def predict():
         image_data = data['image'].split(',')[1]
         image_bytes = base64.b64decode(image_data)
         
-        # Convert to PIL Image
+    
         logger.info("Converting to PIL Image")
         image = Image.open(io.BytesIO(image_bytes))
         
-        # Process the image and get prediction
+        
         prediction = process_image(image)
         
         logger.info(f"Returning prediction: {prediction}")
